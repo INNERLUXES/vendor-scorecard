@@ -1,0 +1,22 @@
+# Every change is reviewed by a maintainer.
+* @innerluxesdev
+
+# The reading of files, the reader of tables, the search for keys, the arithmetic, the checks, the rules and the output decide
+# every result and what is read from the disk; changes need extra care.
+/src/across.js @innerluxesdev
+/src/check.js @innerluxesdev
+/src/cli.js @innerluxesdev
+/src/collect.js @innerluxesdev
+/src/csv.js @innerluxesdev
+/src/data.js @innerluxesdev
+/src/decimal.js @innerluxesdev
+/src/fields.js @innerluxesdev
+/src/files.js @innerluxesdev
+/src/index.js @innerluxesdev
+/src/read.js @innerluxesdev
+/src/report.js @innerluxesdev
+/src/rules.js @innerluxesdev
+/src/score.js @innerluxesdev
+/src/secrets.js @innerluxesdev
+/src/size.js @innerluxesdev
+/src/text.js @innerluxesdev
