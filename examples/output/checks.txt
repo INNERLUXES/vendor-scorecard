@@ -1,0 +1,26 @@
+vendor-scorecard checks
+
+  file-unreadable            error    file         a file is not a table the reader can follow (a quote never closed, text after a closing quote, a cell too long, semicolons for commas) or holds a header and no rows, so nothing in it was checked
+  column-missing             error    file         a column the tool cannot work without is not in the header: vendor, criterion and score of the scores file, its weight unless a criteria file brings the weights, and the criterion and the weight of the criteria file; reported once, at the header
+  column-unknown             warning  file         a column the tool does not read, often a misspelt name; nothing under it was checked
+  column-duplicate           error    file         two columns of a header have the same name once case and separators are ignored; only the first is read
+  row-malformed              error    file         a row with more or fewer cells than the header, which usually means a comma that is not in quotes; the row was left out of every other check
+  secret-in-file             error    file         a file holds a private key, a seed or a mnemonic, under a column named for one or as a cell shaped like one; the tool never reads it and never shows it
+  cell-incomplete            error    row          a row with no vendor, or no criterion, or a row of the criteria file with no criterion, or the text n/a, none, tbd or a dash in place of one; the row was left out
+  duplicate-pair             error    across rows  the same vendor and criterion on two rows, or the same criterion twice in the criteria file; names are compared without regard to case and runs of white space; the second row was left out
+  weight-not-positive        error    row          a weight that is not a plain number above zero (zero, negative, with a thousands separator, with an exponent, text, empty where the scores file gives the weights, or with more than 40 digits)
+  weight-differs             error    across rows  a criterion with a different weight on two rows, or on a row and in the criteria file; the first weight, or the one of the criteria file, is the one used
+  score-invalid              error    row          a score that is not a plain number from 0 to 5: text, negative, above 5, a comma for the point, with an exponent or with more than 40 digits; the criterion counts as unscored for that vendor
+  yes-no-unreadable          error    row          a red_flag cell or a required cell that is not yes, no or empty (in any case); it is read as no
+  criterion-not-in-criteria  error    across rows  a criterion of the scores file that the criteria file does not list, so it has no weight from the criteria file; its rows were left out, and it is reported once
+  criterion-unscored         warning  row          a row with an empty score for a criterion that is not marked required in a criteria file; the vendor is not scored on it, and its weight is left out of the weighted score of the vendor
+  required-unscored          error    across rows  a criterion that the criteria file marks required is unscored for a vendor, by an empty score or by a missing row
+  vendor-misses-criterion    warning  across rows  a vendor with no row at all for a criterion that other vendors have rows for
+  criterion-never-scored     error    across rows  a criterion that no vendor has a score for: listed in the criteria file with no row, or with every row empty or unreadable; it counts for nothing in the weighted scores
+  evidence-missing           warning  row          a score above the --evidence-above threshold (default 3) with nothing in the evidence cell
+  evidence-form              info     row          evidence that is not a web address starting with http:// or https:// and not a document reference such as DOC-12 (pieces separated by semicolons are looked at one by one)
+  red-flag-raised            warning  row          a red_flag answer of yes for a vendor and a criterion; every one is listed, and the ranking table counts them for each vendor
+  coverage-low               warning  across rows  a vendor whose scored weight is below the --min-coverage share (default 80 percent) of the total weight; its weighted score rests on too little of the scorecard
+  tie-too-close              info     across rows  two vendors next to each other in the ranking whose weighted scores differ by less than the --tie-margin (default 0.10), compared exactly; the order between them is too close to call
+
+Every check is a best practice of this tool; no standard sets it. A check of a file is about a file, its header or the width of its rows, a check of a row is found from one row, and a check across rows puts rows side by side. The tool is arithmetic and bookkeeping on the scores people enter; it does not judge vendors and it is not advice.

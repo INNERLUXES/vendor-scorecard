@@ -1,0 +1,52 @@
+vendor-scorecard: examples/good/scores.csv
+file: examples/good/scores.csv (CSV, 29 lines, 3,159 bytes)
+criteria file: examples/good/criteria.csv (CSV, 8 lines, 548 bytes)
+rows: 28
+columns: 7 in the header, 7 read, 0 not read
+scorecard: 4 vendors, 7 weighted criteria, total weight 15
+thresholds: evidence needed above 3, minimum coverage 80 percent, tie margin 0.1
+findings: 0
+
+Ranking (4)
+
+  rank  vendor        score  coverage  red flags  unscored
+  1     Vendor Alpha  4.23   100.0%    0          0
+  2     Vendor Beta   3.85   100.0%    0          0
+  3     Vendor Gamma  3.57   100.0%    0          0
+  4     Vendor Delta  2.78   100.0%    0          0
+
+The weighted score is the sum of weight times score over the scored criteria, divided by the weight of the scored criteria, rounded to two decimals. Coverage is the scored weight as a share of the total weight. A rank is shared by equal scores.
+
+Checks (22)
+
+  check                      level    kind         findings
+  file-unreadable            error    file         0
+  column-missing             error    file         0
+  column-unknown             warning  file         0
+  column-duplicate           error    file         0
+  row-malformed              error    file         0
+  secret-in-file             error    file         0
+  cell-incomplete            error    row          0
+  duplicate-pair             error    across rows  0
+  weight-not-positive        error    row          0
+  weight-differs             error    across rows  0
+  score-invalid              error    row          0
+  yes-no-unreadable          error    row          0
+  criterion-not-in-criteria  error    across rows  0
+  criterion-unscored         warning  row          0
+  required-unscored          error    across rows  0
+  vendor-misses-criterion    warning  across rows  0
+  criterion-never-scored     error    across rows  0
+  evidence-missing           warning  row          0
+  evidence-form              info     row          0
+  red-flag-raised            warning  row          0
+  coverage-low               warning  across rows  0
+  tie-too-close              info     across rows  0
+
+Findings (0)
+
+  none
+
+This report is arithmetic and bookkeeping on the scores in the file. It does not judge any vendor, it does not check that a score or a link is true, and it is not advice.
+
+RESULT: PASS - no finding at or above error

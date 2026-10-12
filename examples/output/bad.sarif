@@ -1,0 +1,1089 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "vendor-scorecard",
+          "version": "1.0.0",
+          "informationUri": "https://github.com/INNERLUXES/vendor-scorecard",
+          "rules": [
+            {
+              "id": "file-unreadable",
+              "name": "file-unreadable",
+              "shortDescription": {
+                "text": "a file is not a table the reader can follow (a quote never closed, text after a closing quote, a cell too long, semicolons for commas) or holds a header and no rows, so nothing in it was checked"
+              },
+              "help": {
+                "text": "Save the file as CSV with commas or TSV with tabs, a header row and one row for each vendor and criterion (docs/inputs.md); fix the line named. (file)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "file"
+              }
+            },
+            {
+              "id": "column-missing",
+              "name": "column-missing",
+              "shortDescription": {
+                "text": "a column the tool cannot work without is not in the header: vendor, criterion and score of the scores file, its weight unless a criteria file brings the weights, and the criterion and the weight of the criteria file; reported once, at the header"
+              },
+              "help": {
+                "text": "Add the column named to the spreadsheet; docs/inputs.md lists every column. The evidence and red_flag columns may be left out, and then every evidence and every red flag is read as empty. (file)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "file"
+              }
+            },
+            {
+              "id": "column-unknown",
+              "name": "column-unknown",
+              "shortDescription": {
+                "text": "a column the tool does not read, often a misspelt name; nothing under it was checked"
+              },
+              "help": {
+                "text": "Correct the name to a column of docs/inputs.md, or leave the column in if it is for your own use. (file)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "file"
+              }
+            },
+            {
+              "id": "column-duplicate",
+              "name": "column-duplicate",
+              "shortDescription": {
+                "text": "two columns of a header have the same name once case and separators are ignored; only the first is read"
+              },
+              "help": {
+                "text": "Keep one column of each name. (file)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "file"
+              }
+            },
+            {
+              "id": "row-malformed",
+              "name": "row-malformed",
+              "shortDescription": {
+                "text": "a row with more or fewer cells than the header, which usually means a comma that is not in quotes; the row was left out of every other check"
+              },
+              "help": {
+                "text": "Put a cell that holds a comma, a tab or a line end in double quotes, and write a quote inside it as two quotes. (file)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "file"
+              }
+            },
+            {
+              "id": "secret-in-file",
+              "name": "secret-in-file",
+              "shortDescription": {
+                "text": "a file holds a private key, a seed or a mnemonic, under a column named for one or as a cell shaped like one; the tool never reads it and never shows it"
+              },
+              "help": {
+                "text": "Remove the value from the file and from wherever the file was copied, treat it as exposed and move what it controls to a new key. A scorecard names vendors, criteria and scores, never the key of an account. (file)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "file"
+              }
+            },
+            {
+              "id": "cell-incomplete",
+              "name": "cell-incomplete",
+              "shortDescription": {
+                "text": "a row with no vendor, or no criterion, or a row of the criteria file with no criterion, or the text n/a, none, tbd or a dash in place of one; the row was left out"
+              },
+              "help": {
+                "text": "Fill the cell, or delete the row if it is a leftover. (row)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "row"
+              }
+            },
+            {
+              "id": "duplicate-pair",
+              "name": "duplicate-pair",
+              "shortDescription": {
+                "text": "the same vendor and criterion on two rows, or the same criterion twice in the criteria file; names are compared without regard to case and runs of white space; the second row was left out"
+              },
+              "help": {
+                "text": "Keep one row for each vendor and criterion, or one row for each criterion in the criteria file. (across rows)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "across rows"
+              }
+            },
+            {
+              "id": "weight-not-positive",
+              "name": "weight-not-positive",
+              "shortDescription": {
+                "text": "a weight that is not a plain number above zero (zero, negative, with a thousands separator, with an exponent, text, empty where the scores file gives the weights, or with more than 40 digits)"
+              },
+              "help": {
+                "text": "Write the weight as a plain number above zero, such as 2 or 1.5. (row)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "row"
+              }
+            },
+            {
+              "id": "weight-differs",
+              "name": "weight-differs",
+              "shortDescription": {
+                "text": "a criterion with a different weight on two rows, or on a row and in the criteria file; the first weight, or the one of the criteria file, is the one used"
+              },
+              "help": {
+                "text": "Give the criterion one weight and write it on every row, or leave the weight out of the scores file and give it in the criteria file. (across rows)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "across rows"
+              }
+            },
+            {
+              "id": "score-invalid",
+              "name": "score-invalid",
+              "shortDescription": {
+                "text": "a score that is not a plain number from 0 to 5: text, negative, above 5, a comma for the point, with an exponent or with more than 40 digits; the criterion counts as unscored for that vendor"
+              },
+              "help": {
+                "text": "Write the score as a plain number from 0 to 5, with a point, such as 4 or 3.5, or leave the cell empty if the vendor was not scored. (row)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "row"
+              }
+            },
+            {
+              "id": "yes-no-unreadable",
+              "name": "yes-no-unreadable",
+              "shortDescription": {
+                "text": "a red_flag cell or a required cell that is not yes, no or empty (in any case); it is read as no"
+              },
+              "help": {
+                "text": "Write yes or no, or leave the cell empty. (row)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "row"
+              }
+            },
+            {
+              "id": "criterion-not-in-criteria",
+              "name": "criterion-not-in-criteria",
+              "shortDescription": {
+                "text": "a criterion of the scores file that the criteria file does not list, so it has no weight from the criteria file; its rows were left out, and it is reported once"
+              },
+              "help": {
+                "text": "Add the criterion to the criteria file, or correct its name in the scores file. (across rows)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "across rows"
+              }
+            },
+            {
+              "id": "criterion-unscored",
+              "name": "criterion-unscored",
+              "shortDescription": {
+                "text": "a row with an empty score for a criterion that is not marked required in a criteria file; the vendor is not scored on it, and its weight is left out of the weighted score of the vendor"
+              },
+              "help": {
+                "text": "Score the criterion, or leave it unscored on purpose and check that the coverage of the vendor is still enough. (row)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "row"
+              }
+            },
+            {
+              "id": "required-unscored",
+              "name": "required-unscored",
+              "shortDescription": {
+                "text": "a criterion that the criteria file marks required is unscored for a vendor, by an empty score or by a missing row"
+              },
+              "help": {
+                "text": "Score the criterion for the vendor, or take the mark required off it in the criteria file. (across rows)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "across rows"
+              }
+            },
+            {
+              "id": "vendor-misses-criterion",
+              "name": "vendor-misses-criterion",
+              "shortDescription": {
+                "text": "a vendor with no row at all for a criterion that other vendors have rows for"
+              },
+              "help": {
+                "text": "Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap. (across rows)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "across rows"
+              }
+            },
+            {
+              "id": "criterion-never-scored",
+              "name": "criterion-never-scored",
+              "shortDescription": {
+                "text": "a criterion that no vendor has a score for: listed in the criteria file with no row, or with every row empty or unreadable; it counts for nothing in the weighted scores"
+              },
+              "help": {
+                "text": "Score the criterion for the vendors, or take it out of the criteria file and the scores file. (across rows)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "across rows"
+              }
+            },
+            {
+              "id": "evidence-missing",
+              "name": "evidence-missing",
+              "shortDescription": {
+                "text": "a score above the --evidence-above threshold (default 3) with nothing in the evidence cell"
+              },
+              "help": {
+                "text": "Put the web address or the document reference that the score rests on in the evidence cell, or lower the score. (row)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "row"
+              }
+            },
+            {
+              "id": "evidence-form",
+              "name": "evidence-form",
+              "shortDescription": {
+                "text": "evidence that is not a web address starting with http:// or https:// and not a document reference such as DOC-12 (pieces separated by semicolons are looked at one by one)"
+              },
+              "help": {
+                "text": "Write the evidence as a web address or as a document reference, so that a second reader can find it. (row)"
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "kind": "row"
+              }
+            },
+            {
+              "id": "red-flag-raised",
+              "name": "red-flag-raised",
+              "shortDescription": {
+                "text": "a red_flag answer of yes for a vendor and a criterion; every one is listed, and the ranking table counts them for each vendor"
+              },
+              "help": {
+                "text": "Read the note and decide, as a person, what the red flag means for the shortlist. The tool does not drop a vendor and does not change a score for it. (row)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "row"
+              }
+            },
+            {
+              "id": "coverage-low",
+              "name": "coverage-low",
+              "shortDescription": {
+                "text": "a vendor whose scored weight is below the --min-coverage share (default 80 percent) of the total weight; its weighted score rests on too little of the scorecard"
+              },
+              "help": {
+                "text": "Score the missing criteria for the vendor, or read its weighted score as a score on part of the scorecard. (across rows)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "across rows"
+              }
+            },
+            {
+              "id": "tie-too-close",
+              "name": "tie-too-close",
+              "shortDescription": {
+                "text": "two vendors next to each other in the ranking whose weighted scores differ by less than the --tie-margin (default 0.10), compared exactly; the order between them is too close to call"
+              },
+              "help": {
+                "text": "Do not treat the order of the two as a result. Look at the criteria that differ, at the evidence and at the red flags, or score again. (across rows)"
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "kind": "across rows"
+              }
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "examples/bad/scores.csv"
+          }
+        },
+        {
+          "location": {
+            "uri": "examples/bad/criteria.csv"
+          }
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "column-missing",
+          "ruleIndex": 1,
+          "level": "error",
+          "message": {
+            "text": "The header of the criteria file has no \"weight\" column, so it cannot give the weights; they are read from the scores file. Fix: Add the column named to the spreadsheet; docs/inputs.md lists every column. The evidence and red_flag columns may be left out, and then every evidence and every red flag is read as empty."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/criteria.csv",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "file",
+            "subject": "weight"
+          }
+        },
+        {
+          "ruleId": "yes-no-unreadable",
+          "ruleIndex": 11,
+          "level": "error",
+          "message": {
+            "text": "The required cell of row 5 of the criteria file, \"maybe\", is not yes or no; the criterion is read as not required. Fix: Write yes or no, or leave the cell empty."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/criteria.csv",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 12
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "row",
+            "subject": "References"
+          }
+        },
+        {
+          "ruleId": "criterion-never-scored",
+          "ruleIndex": 16,
+          "level": "error",
+          "message": {
+            "text": "The criterion \"Token design\" is in the criteria file, but was scored by no vendor: no row of the scores file scores it. It counts for nothing in the weighted scores. Fix: Score the criterion for the vendors, or take it out of the criteria file and the scores file."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/criteria.csv",
+                  "index": 1
+                },
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Token design"
+          }
+        },
+        {
+          "ruleId": "column-duplicate",
+          "ruleIndex": 3,
+          "level": "error",
+          "message": {
+            "text": "The column \"Note\" has the same name as column 7 of the scores file once case and separators are ignored; only the first is read. Fix: Keep one column of each name."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 61
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "file",
+            "subject": "Note"
+          }
+        },
+        {
+          "ruleId": "duplicate-pair",
+          "ruleIndex": 7,
+          "level": "error",
+          "message": {
+            "text": "Row 8 scores the vendor \"Vendor Alpha\" on the criterion \"Integration\" again; row 4, on line 5, already does. The row was left out of the other checks. Fix: Keep one row for each vendor and criterion, or one row for each criterion in the criteria file."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Alpha / Integration"
+          }
+        },
+        {
+          "ruleId": "yes-no-unreadable",
+          "ruleIndex": 11,
+          "level": "error",
+          "message": {
+            "text": "The red_flag of row 11, \"maybe\", is not yes or no; it is read as no. Fix: Write yes or no, or leave the cell empty."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 85
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "row",
+            "subject": "Vendor Beta / Security practice"
+          }
+        },
+        {
+          "ruleId": "weight-differs",
+          "ruleIndex": 9,
+          "level": "error",
+          "message": {
+            "text": "The weight of row 13 for the criterion \"References\" is 2, but row 5, on line 6, gives it 1.5. The first weight is the one used. Fix: Give the criterion one weight and write it on every row, or leave the weight out of the scores file and give it in the criteria file."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Beta / References"
+          }
+        },
+        {
+          "ruleId": "criterion-not-in-criteria",
+          "ruleIndex": 12,
+          "level": "error",
+          "message": {
+            "text": "The criterion \"Roadmap fit\" of row 16 is not in the criteria file, so it has no weight from it; the rows of this criterion were left out. Fix: Add the criterion to the criteria file, or correct its name in the scores file."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 13
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Roadmap fit"
+          }
+        },
+        {
+          "ruleId": "required-unscored",
+          "ruleIndex": 14,
+          "level": "error",
+          "message": {
+            "text": "The vendor \"Vendor Gamma\" has no row for the criterion \"Published audits\", which other vendors have and the criteria file marks required. Fix: Score the criterion for the vendor, or take the mark required off it in the criteria file."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Gamma / Published audits"
+          }
+        },
+        {
+          "ruleId": "score-invalid",
+          "ruleIndex": 10,
+          "level": "error",
+          "message": {
+            "text": "The score of row 19, 7, is above 5. The criterion counts as unscored for this vendor. Fix: Write the score as a plain number from 0 to 5, with a point, such as 4 or 3.5, or leave the cell empty if the vendor was not scored."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "row",
+            "subject": "Vendor Gamma / Integration"
+          }
+        },
+        {
+          "ruleId": "weight-not-positive",
+          "ruleIndex": 8,
+          "level": "error",
+          "message": {
+            "text": "The weight of row 21, \"0\", is not a plain number above zero (no sign, no exponent, no thousands separator, at most 40 digits). Fix: Write the weight as a plain number above zero, such as 2 or 1.5."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "row",
+            "subject": "Vendor Gamma / Pricing clarity"
+          }
+        },
+        {
+          "ruleId": "cell-incomplete",
+          "ruleIndex": 6,
+          "level": "error",
+          "message": {
+            "text": "Row 22 has no value in the cell under \"vendor\", which every row needs; the row was left out. Fix: Fill the cell, or delete the row if it is a leftover."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "row",
+            "subject": null
+          }
+        },
+        {
+          "ruleId": "required-unscored",
+          "ruleIndex": 14,
+          "level": "error",
+          "message": {
+            "text": "Row 23 leaves the criterion \"Chain experience\" unscored for the vendor \"Vendor Delta\", and the criteria file marks it required. Fix: Score the criterion for the vendor, or take the mark required off it in the criteria file."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Delta / Chain experience"
+          }
+        },
+        {
+          "ruleId": "secret-in-file",
+          "ruleIndex": 5,
+          "level": "error",
+          "message": {
+            "text": "A cell of the column \"note\" is shaped like a mnemonic. The tool never reads a seed or a key, and the value is not shown. Fix: Remove the value from the file and from wherever the file was copied, treat it as exposed and move what it controls to a new key. A scorecard names vendors, criteria and scores, never the key of an account."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 90
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "file",
+            "subject": null
+          }
+        },
+        {
+          "ruleId": "row-malformed",
+          "ruleIndex": 4,
+          "level": "error",
+          "message": {
+            "text": "Row 27 has 4 cells but the header has 9; the row was left out of every other check. Fix: Put a cell that holds a comma, a tab or a line end in double quotes, and write a quote inside it as two quotes."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "file",
+            "subject": null
+          }
+        },
+        {
+          "ruleId": "column-unknown",
+          "ruleIndex": 2,
+          "level": "warning",
+          "message": {
+            "text": "The column \"status\" of the scores file is not a column the tool reads, so the values under it are not checked. Fix: Correct the name to a column of docs/inputs.md, or leave the column in if it is for your own use."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 54
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "file",
+            "subject": "status"
+          }
+        },
+        {
+          "ruleId": "red-flag-raised",
+          "ruleIndex": 19,
+          "level": "warning",
+          "message": {
+            "text": "The vendor \"Vendor Alpha\" has a red flag for the criterion \"Security practice\" in row 3. Note: \"Signing key held by one person only\". Fix: Read the note and decide, as a person, what the red flag means for the shortlist. The tool does not drop a vendor and does not change a score for it."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 4,
+                  "startColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "row",
+            "subject": "Vendor Alpha / Security practice"
+          }
+        },
+        {
+          "ruleId": "evidence-missing",
+          "ruleIndex": 17,
+          "level": "warning",
+          "message": {
+            "text": "Row 10 scores \"Published audits\" at 5 for \"Vendor Beta\" with nothing in the evidence cell; a score above 3 should point at where it comes from. Fix: Put the web address or the document reference that the score rests on in the evidence cell, or lower the score."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "row",
+            "subject": "Vendor Beta / Published audits"
+          }
+        },
+        {
+          "ruleId": "criterion-unscored",
+          "ruleIndex": 13,
+          "level": "warning",
+          "message": {
+            "text": "Row 12 leaves the criterion \"Integration\" unscored for the vendor \"Vendor Beta\". Fix: Score the criterion, or leave it unscored on purpose and check that the coverage of the vendor is still enough."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "row",
+            "subject": "Vendor Beta / Integration"
+          }
+        },
+        {
+          "ruleId": "coverage-low",
+          "ruleIndex": 20,
+          "level": "warning",
+          "message": {
+            "text": "The coverage of the vendor \"Vendor Gamma\" is 56.7 percent of the total weight, below the minimum of 80 percent. Its weighted score rests on 4 of 7 criteria. Fix: Score the missing criteria for the vendor, or read its weighted score as a score on part of the scorecard."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Gamma"
+          }
+        },
+        {
+          "ruleId": "vendor-misses-criterion",
+          "ruleIndex": 15,
+          "level": "warning",
+          "message": {
+            "text": "The vendor \"Vendor Gamma\" has no row for the criterion \"Support after launch\", which other vendors have. Fix: Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Gamma / Support after launch"
+          }
+        },
+        {
+          "ruleId": "coverage-low",
+          "ruleIndex": 20,
+          "level": "warning",
+          "message": {
+            "text": "The coverage of the vendor \"Vendor Delta\" is 43.3 percent of the total weight, below the minimum of 80 percent. Its weighted score rests on 3 of 7 criteria. Fix: Score the missing criteria for the vendor, or read its weighted score as a score on part of the scorecard."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Delta"
+          }
+        },
+        {
+          "ruleId": "vendor-misses-criterion",
+          "ruleIndex": 15,
+          "level": "warning",
+          "message": {
+            "text": "The vendor \"Vendor Delta\" has no row for the criterion \"Integration\", which other vendors have. Fix: Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Delta / Integration"
+          }
+        },
+        {
+          "ruleId": "vendor-misses-criterion",
+          "ruleIndex": 15,
+          "level": "warning",
+          "message": {
+            "text": "The vendor \"Vendor Delta\" has no row for the criterion \"References\", which other vendors have. Fix: Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Delta / References"
+          }
+        },
+        {
+          "ruleId": "vendor-misses-criterion",
+          "ruleIndex": 15,
+          "level": "warning",
+          "message": {
+            "text": "The vendor \"Vendor Delta\" has no row for the criterion \"Support after launch\", which other vendors have. Fix: Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Delta / Support after launch"
+          }
+        },
+        {
+          "ruleId": "tie-too-close",
+          "ruleIndex": 21,
+          "level": "note",
+          "message": {
+            "text": "The vendors \"Vendor Alpha\" (4.23) and \"Vendor Beta\" (4.19) are next to each other in the ranking and differ by less than the tie margin of 0.1; the order between them is too close to call. Fix: Do not treat the order of the two as a result. Look at the criteria that differ, at the evidence and at the red flags, or score again."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 2,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "across rows",
+            "subject": "Vendor Alpha / Vendor Beta"
+          }
+        },
+        {
+          "ruleId": "evidence-form",
+          "ruleIndex": 18,
+          "level": "note",
+          "message": {
+            "text": "The evidence of row 6, \"as discussed on the call\", is not a web address that starts with http:// or https://, and not a document reference such as DOC-12. Fix: Write the evidence as a web address or as a document reference, so that a second reader can find it."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bad/scores.csv",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": "row",
+            "subject": "Vendor Alpha / Pricing clarity"
+          }
+        }
+      ],
+      "properties": {
+        "notice": "This report is arithmetic and bookkeeping on the scores in the file. It does not judge any vendor, it does not check that a score or a link is true, and it is not advice.",
+        "result": "FAIL - 15 findings at or above error (15 error, 10 warning, 2 info)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+# vendor-scorecard: examples/bad/scores.csv
+
+- File: examples/bad/scores.csv \(CSV, 28 lines, 2,830 bytes\)
+- Criteria file: examples/bad/criteria.csv \(CSV, 9 lines, 549 bytes\)
+- Rows: 27 \(23 read, 4 rows left out\)
+- Columns: 9 in the header, 7 read, 2 not read
+- Scorecard: 4 vendors, 7 weighted criteria, total weight 15
+- Thresholds: evidence needed above 3, minimum coverage 80 percent, tie margin 0.1
+- Findings: 27 \(15 error, 10 warning, 2 info\)
+- Result: **FAIL - 15 findings at or above error \(15 error, 10 warning, 2 info\)**
+
+## Ranking
+
+| Rank | Vendor | Score | Coverage | Red flags | Unscored |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Vendor Alpha | 4.23 | 100.0% | 1 | 0 |
+| 2 | Vendor Beta | 4.19 | 86.7% | 0 | 1 |
+| 3 | Vendor Gamma | 3.59 | 56.7% | 0 | 3 |
+| 4 | Vendor Delta | 2.54 | 43.3% | 0 | 4 |
+
+## Findings
+
+| Level | Check | Where | Message |
+| --- | --- | --- | --- |
+| error | column-missing | examples/bad/criteria.csv:1 | The header of the criteria file has no "weight" column, so it cannot give the weights; they are read from the scores file. Fix: Add the column named to the spreadsheet; docs/inputs.md lists every column. The evidence and red\_flag columns may be left out, and then every evidence and every red flag is read as empty. |
+| error | yes-no-unreadable | examples/bad/criteria.csv:6 | The required cell of row 5 of the criteria file, "maybe", is not yes or no; the criterion is read as not required. Fix: Write yes or no, or leave the cell empty. |
+| error | criterion-never-scored | examples/bad/criteria.csv:9 | The criterion "Token design" is in the criteria file, but was scored by no vendor: no row of the scores file scores it. It counts for nothing in the weighted scores. Fix: Score the criterion for the vendors, or take it out of the criteria file and the scores file. |
+| error | column-duplicate | examples/bad/scores.csv:1 | The column "Note" has the same name as column 7 of the scores file once case and separators are ignored; only the first is read. Fix: Keep one column of each name. |
+| error | duplicate-pair | examples/bad/scores.csv:9 | Row 8 scores the vendor "Vendor Alpha" on the criterion "Integration" again; row 4, on line 5, already does. The row was left out of the other checks. Fix: Keep one row for each vendor and criterion, or one row for each criterion in the criteria file. |
+| error | yes-no-unreadable | examples/bad/scores.csv:12 | The red\_flag of row 11, "maybe", is not yes or no; it is read as no. Fix: Write yes or no, or leave the cell empty. |
+| error | weight-differs | examples/bad/scores.csv:14 | The weight of row 13 for the criterion "References" is 2, but row 5, on line 6, gives it 1.5. The first weight is the one used. Fix: Give the criterion one weight and write it on every row, or leave the weight out of the scores file and give it in the criteria file. |
+| error | criterion-not-in-criteria | examples/bad/scores.csv:17 | The criterion "Roadmap fit" of row 16 is not in the criteria file, so it has no weight from it; the rows of this criterion were left out. Fix: Add the criterion to the criteria file, or correct its name in the scores file. |
+| error | required-unscored | examples/bad/scores.csv:18 | The vendor "Vendor Gamma" has no row for the criterion "Published audits", which other vendors have and the criteria file marks required. Fix: Score the criterion for the vendor, or take the mark required off it in the criteria file. |
+| error | score-invalid | examples/bad/scores.csv:20 | The score of row 19, 7, is above 5. The criterion counts as unscored for this vendor. Fix: Write the score as a plain number from 0 to 5, with a point, such as 4 or 3.5, or leave the cell empty if the vendor was not scored. |
+| error | weight-not-positive | examples/bad/scores.csv:22 | The weight of row 21, "0", is not a plain number above zero \(no sign, no exponent, no thousands separator, at most 40 digits\). Fix: Write the weight as a plain number above zero, such as 2 or 1.5. |
+| error | cell-incomplete | examples/bad/scores.csv:23 | Row 22 has no value in the cell under "vendor", which every row needs; the row was left out. Fix: Fill the cell, or delete the row if it is a leftover. |
+| error | required-unscored | examples/bad/scores.csv:24 | Row 23 leaves the criterion "Chain experience" unscored for the vendor "Vendor Delta", and the criteria file marks it required. Fix: Score the criterion for the vendor, or take the mark required off it in the criteria file. |
+| error | secret-in-file | examples/bad/scores.csv:26 | A cell of the column "note" is shaped like a mnemonic. The tool never reads a seed or a key, and the value is not shown. Fix: Remove the value from the file and from wherever the file was copied, treat it as exposed and move what it controls to a new key. A scorecard names vendors, criteria and scores, never the key of an account. |
+| error | row-malformed | examples/bad/scores.csv:28 | Row 27 has 4 cells but the header has 9; the row was left out of every other check. Fix: Put a cell that holds a comma, a tab or a line end in double quotes, and write a quote inside it as two quotes. |
+| warning | column-unknown | examples/bad/scores.csv:1 | The column "status" of the scores file is not a column the tool reads, so the values under it are not checked. Fix: Correct the name to a column of docs/inputs.md, or leave the column in if it is for your own use. |
+| warning | red-flag-raised | examples/bad/scores.csv:4 | The vendor "Vendor Alpha" has a red flag for the criterion "Security practice" in row 3. Note: "Signing key held by one person only". Fix: Read the note and decide, as a person, what the red flag means for the shortlist. The tool does not drop a vendor and does not change a score for it. |
+| warning | evidence-missing | examples/bad/scores.csv:11 | Row 10 scores "Published audits" at 5 for "Vendor Beta" with nothing in the evidence cell; a score above 3 should point at where it comes from. Fix: Put the web address or the document reference that the score rests on in the evidence cell, or lower the score. |
+| warning | criterion-unscored | examples/bad/scores.csv:13 | Row 12 leaves the criterion "Integration" unscored for the vendor "Vendor Beta". Fix: Score the criterion, or leave it unscored on purpose and check that the coverage of the vendor is still enough. |
+| warning | coverage-low | examples/bad/scores.csv:18 | The coverage of the vendor "Vendor Gamma" is 56.7 percent of the total weight, below the minimum of 80 percent. Its weighted score rests on 4 of 7 criteria. Fix: Score the missing criteria for the vendor, or read its weighted score as a score on part of the scorecard. |
+| warning | vendor-misses-criterion | examples/bad/scores.csv:18 | The vendor "Vendor Gamma" has no row for the criterion "Support after launch", which other vendors have. Fix: Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap. |
+| warning | coverage-low | examples/bad/scores.csv:24 | The coverage of the vendor "Vendor Delta" is 43.3 percent of the total weight, below the minimum of 80 percent. Its weighted score rests on 3 of 7 criteria. Fix: Score the missing criteria for the vendor, or read its weighted score as a score on part of the scorecard. |
+| warning | vendor-misses-criterion | examples/bad/scores.csv:24 | The vendor "Vendor Delta" has no row for the criterion "Integration", which other vendors have. Fix: Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap. |
+| warning | vendor-misses-criterion | examples/bad/scores.csv:24 | The vendor "Vendor Delta" has no row for the criterion "References", which other vendors have. Fix: Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap. |
+| warning | vendor-misses-criterion | examples/bad/scores.csv:24 | The vendor "Vendor Delta" has no row for the criterion "Support after launch", which other vendors have. Fix: Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap. |
+| info | tie-too-close | examples/bad/scores.csv:2 | The vendors "Vendor Alpha" \(4.23\) and "Vendor Beta" \(4.19\) are next to each other in the ranking and differ by less than the tie margin of 0.1; the order between them is too close to call. Fix: Do not treat the order of the two as a result. Look at the criteria that differ, at the evidence and at the red flags, or score again. |
+| info | evidence-form | examples/bad/scores.csv:7 | The evidence of row 6, "as discussed on the call", is not a web address that starts with http:// or https://, and not a document reference such as DOC-12. Fix: Write the evidence as a web address or as a document reference, so that a second reader can find it. |
+
+## Red flags by vendor
+
+- Vendor Alpha: 1 red flag, for Security practice
+
+Note: 1 criterion has no valid weight and is left out of the weighted scores and the coverage
+
+This report is arithmetic and bookkeeping on the scores in the file. It does not judge any vendor, it does not check that a score or a link is true, and it is not advice.

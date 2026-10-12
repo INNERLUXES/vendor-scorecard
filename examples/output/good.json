@@ -1,0 +1,231 @@
+{
+  "tool": "vendor-scorecard",
+  "version": "1.0.0",
+  "input": {
+    "file": "examples/good/scores.csv",
+    "format": "CSV",
+    "bytes": 3159,
+    "lines": 29
+  },
+  "criteriaInput": {
+    "file": "examples/good/criteria.csv",
+    "format": "CSV",
+    "bytes": 548,
+    "lines": 8
+  },
+  "scorecard": {
+    "rows": 28,
+    "read": 28,
+    "skipped": 0,
+    "columns": 7,
+    "columnsRead": 7,
+    "vendors": 4,
+    "criteria": 7,
+    "totalWeight": "15",
+    "unlisted": 0
+  },
+  "ranking": [
+    {
+      "rank": 1,
+      "vendor": "Vendor Alpha",
+      "score": "4.23",
+      "coverage": "100.0",
+      "redFlags": 0,
+      "redFlagCriteria": [],
+      "unscored": 0,
+      "scored": 7,
+      "line": 2
+    },
+    {
+      "rank": 2,
+      "vendor": "Vendor Beta",
+      "score": "3.85",
+      "coverage": "100.0",
+      "redFlags": 0,
+      "redFlagCriteria": [],
+      "unscored": 0,
+      "scored": 7,
+      "line": 9
+    },
+    {
+      "rank": 3,
+      "vendor": "Vendor Gamma",
+      "score": "3.57",
+      "coverage": "100.0",
+      "redFlags": 0,
+      "redFlagCriteria": [],
+      "unscored": 0,
+      "scored": 7,
+      "line": 16
+    },
+    {
+      "rank": 4,
+      "vendor": "Vendor Delta",
+      "score": "2.78",
+      "coverage": "100.0",
+      "redFlags": 0,
+      "redFlagCriteria": [],
+      "unscored": 0,
+      "scored": 7,
+      "line": 23
+    }
+  ],
+  "totals": {
+    "findings": 0,
+    "byLevel": {
+      "error": 0,
+      "warning": 0,
+      "info": 0
+    },
+    "hidden": 0
+  },
+  "rules": [
+    {
+      "id": "file-unreadable",
+      "level": "error",
+      "kind": "file",
+      "findings": 0
+    },
+    {
+      "id": "column-missing",
+      "level": "error",
+      "kind": "file",
+      "findings": 0
+    },
+    {
+      "id": "column-unknown",
+      "level": "warning",
+      "kind": "file",
+      "findings": 0
+    },
+    {
+      "id": "column-duplicate",
+      "level": "error",
+      "kind": "file",
+      "findings": 0
+    },
+    {
+      "id": "row-malformed",
+      "level": "error",
+      "kind": "file",
+      "findings": 0
+    },
+    {
+      "id": "secret-in-file",
+      "level": "error",
+      "kind": "file",
+      "findings": 0
+    },
+    {
+      "id": "cell-incomplete",
+      "level": "error",
+      "kind": "row",
+      "findings": 0
+    },
+    {
+      "id": "duplicate-pair",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 0
+    },
+    {
+      "id": "weight-not-positive",
+      "level": "error",
+      "kind": "row",
+      "findings": 0
+    },
+    {
+      "id": "weight-differs",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 0
+    },
+    {
+      "id": "score-invalid",
+      "level": "error",
+      "kind": "row",
+      "findings": 0
+    },
+    {
+      "id": "yes-no-unreadable",
+      "level": "error",
+      "kind": "row",
+      "findings": 0
+    },
+    {
+      "id": "criterion-not-in-criteria",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 0
+    },
+    {
+      "id": "criterion-unscored",
+      "level": "warning",
+      "kind": "row",
+      "findings": 0
+    },
+    {
+      "id": "required-unscored",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 0
+    },
+    {
+      "id": "vendor-misses-criterion",
+      "level": "warning",
+      "kind": "across rows",
+      "findings": 0
+    },
+    {
+      "id": "criterion-never-scored",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 0
+    },
+    {
+      "id": "evidence-missing",
+      "level": "warning",
+      "kind": "row",
+      "findings": 0
+    },
+    {
+      "id": "evidence-form",
+      "level": "info",
+      "kind": "row",
+      "findings": 0
+    },
+    {
+      "id": "red-flag-raised",
+      "level": "warning",
+      "kind": "row",
+      "findings": 0
+    },
+    {
+      "id": "coverage-low",
+      "level": "warning",
+      "kind": "across rows",
+      "findings": 0
+    },
+    {
+      "id": "tie-too-close",
+      "level": "info",
+      "kind": "across rows",
+      "findings": 0
+    }
+  ],
+  "options": {
+    "minSeverity": "info",
+    "failOn": "error",
+    "evidenceAbove": "3",
+    "minCoverage": "80",
+    "tieMargin": "0.1"
+  },
+  "findings": [],
+  "notes": [],
+  "notice": "This report is arithmetic and bookkeeping on the scores in the file. It does not judge any vendor, it does not check that a score or a link is true, and it is not advice.",
+  "result": {
+    "pass": true,
+    "failOn": "error",
+    "text": "PASS - no finding at or above error"
+  }
+}

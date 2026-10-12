@@ -1,0 +1,587 @@
+{
+  "tool": "vendor-scorecard",
+  "version": "1.0.0",
+  "input": {
+    "file": "examples/bad/scores.csv",
+    "format": "CSV",
+    "bytes": 2830,
+    "lines": 28
+  },
+  "criteriaInput": {
+    "file": "examples/bad/criteria.csv",
+    "format": "CSV",
+    "bytes": 549,
+    "lines": 9
+  },
+  "scorecard": {
+    "rows": 27,
+    "read": 23,
+    "skipped": 4,
+    "columns": 9,
+    "columnsRead": 7,
+    "vendors": 4,
+    "criteria": 7,
+    "totalWeight": "15",
+    "unlisted": 1
+  },
+  "ranking": [
+    {
+      "rank": 1,
+      "vendor": "Vendor Alpha",
+      "score": "4.23",
+      "coverage": "100.0",
+      "redFlags": 1,
+      "redFlagCriteria": [
+        "Security practice"
+      ],
+      "unscored": 0,
+      "scored": 7,
+      "line": 2
+    },
+    {
+      "rank": 2,
+      "vendor": "Vendor Beta",
+      "score": "4.19",
+      "coverage": "86.7",
+      "redFlags": 0,
+      "redFlagCriteria": [],
+      "unscored": 1,
+      "scored": 6,
+      "line": 10
+    },
+    {
+      "rank": 3,
+      "vendor": "Vendor Gamma",
+      "score": "3.59",
+      "coverage": "56.7",
+      "redFlags": 0,
+      "redFlagCriteria": [],
+      "unscored": 3,
+      "scored": 4,
+      "line": 18
+    },
+    {
+      "rank": 4,
+      "vendor": "Vendor Delta",
+      "score": "2.54",
+      "coverage": "43.3",
+      "redFlags": 0,
+      "redFlagCriteria": [],
+      "unscored": 4,
+      "scored": 3,
+      "line": 24
+    }
+  ],
+  "totals": {
+    "findings": 27,
+    "byLevel": {
+      "error": 15,
+      "warning": 10,
+      "info": 2
+    },
+    "hidden": 0
+  },
+  "rules": [
+    {
+      "id": "file-unreadable",
+      "level": "error",
+      "kind": "file",
+      "findings": 0
+    },
+    {
+      "id": "column-missing",
+      "level": "error",
+      "kind": "file",
+      "findings": 1
+    },
+    {
+      "id": "column-unknown",
+      "level": "warning",
+      "kind": "file",
+      "findings": 1
+    },
+    {
+      "id": "column-duplicate",
+      "level": "error",
+      "kind": "file",
+      "findings": 1
+    },
+    {
+      "id": "row-malformed",
+      "level": "error",
+      "kind": "file",
+      "findings": 1
+    },
+    {
+      "id": "secret-in-file",
+      "level": "error",
+      "kind": "file",
+      "findings": 1
+    },
+    {
+      "id": "cell-incomplete",
+      "level": "error",
+      "kind": "row",
+      "findings": 1
+    },
+    {
+      "id": "duplicate-pair",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 1
+    },
+    {
+      "id": "weight-not-positive",
+      "level": "error",
+      "kind": "row",
+      "findings": 1
+    },
+    {
+      "id": "weight-differs",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 1
+    },
+    {
+      "id": "score-invalid",
+      "level": "error",
+      "kind": "row",
+      "findings": 1
+    },
+    {
+      "id": "yes-no-unreadable",
+      "level": "error",
+      "kind": "row",
+      "findings": 2
+    },
+    {
+      "id": "criterion-not-in-criteria",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 1
+    },
+    {
+      "id": "criterion-unscored",
+      "level": "warning",
+      "kind": "row",
+      "findings": 1
+    },
+    {
+      "id": "required-unscored",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 2
+    },
+    {
+      "id": "vendor-misses-criterion",
+      "level": "warning",
+      "kind": "across rows",
+      "findings": 4
+    },
+    {
+      "id": "criterion-never-scored",
+      "level": "error",
+      "kind": "across rows",
+      "findings": 1
+    },
+    {
+      "id": "evidence-missing",
+      "level": "warning",
+      "kind": "row",
+      "findings": 1
+    },
+    {
+      "id": "evidence-form",
+      "level": "info",
+      "kind": "row",
+      "findings": 1
+    },
+    {
+      "id": "red-flag-raised",
+      "level": "warning",
+      "kind": "row",
+      "findings": 1
+    },
+    {
+      "id": "coverage-low",
+      "level": "warning",
+      "kind": "across rows",
+      "findings": 2
+    },
+    {
+      "id": "tie-too-close",
+      "level": "info",
+      "kind": "across rows",
+      "findings": 1
+    }
+  ],
+  "options": {
+    "minSeverity": "info",
+    "failOn": "error",
+    "evidenceAbove": "3",
+    "minCoverage": "80",
+    "tieMargin": "0.1"
+  },
+  "findings": [
+    {
+      "id": "column-missing",
+      "severity": "error",
+      "message": "The header of the criteria file has no \"weight\" column, so it cannot give the weights; they are read from the scores file.",
+      "file": "examples/bad/criteria.csv",
+      "line": 1,
+      "column": 1,
+      "at": "examples/bad/criteria.csv:1",
+      "subject": "weight",
+      "fix": "Add the column named to the spreadsheet; docs/inputs.md lists every column. The evidence and red_flag columns may be left out, and then every evidence and every red flag is read as empty.",
+      "kind": "file",
+      "own": "Asking for these columns is a best practice of this tool; no standard sets it; the names are the tool's own, because no standard fixes the columns of a scorecard"
+    },
+    {
+      "id": "yes-no-unreadable",
+      "severity": "error",
+      "message": "The required cell of row 5 of the criteria file, \"maybe\", is not yes or no; the criterion is read as not required.",
+      "file": "examples/bad/criteria.csv",
+      "line": 6,
+      "column": 12,
+      "at": "examples/bad/criteria.csv:6",
+      "subject": "References",
+      "fix": "Write yes or no, or leave the cell empty.",
+      "kind": "row",
+      "own": "Reading only yes and no is a best practice of this tool; no standard sets it; a red flag written as \"maybe\" or \"y\" would otherwise pass as no flag"
+    },
+    {
+      "id": "criterion-never-scored",
+      "severity": "error",
+      "message": "The criterion \"Token design\" is in the criteria file, but was scored by no vendor: no row of the scores file scores it. It counts for nothing in the weighted scores.",
+      "file": "examples/bad/criteria.csv",
+      "line": 9,
+      "column": 1,
+      "at": "examples/bad/criteria.csv:9",
+      "subject": "Token design",
+      "fix": "Score the criterion for the vendors, or take it out of the criteria file and the scores file.",
+      "kind": "across rows",
+      "own": "Listing a criterion nobody scored is a best practice of this tool; no standard sets it; it takes weight in the sheet and counts for nothing in the ranking, which looks like a decision and is not one"
+    },
+    {
+      "id": "column-duplicate",
+      "severity": "error",
+      "message": "The column \"Note\" has the same name as column 7 of the scores file once case and separators are ignored; only the first is read.",
+      "file": "examples/bad/scores.csv",
+      "line": 1,
+      "column": 61,
+      "at": "examples/bad/scores.csv:1",
+      "subject": "Note",
+      "fix": "Keep one column of each name.",
+      "kind": "file",
+      "own": "Refusing a column written twice is a best practice of this tool; no standard sets it; two readers could see two values"
+    },
+    {
+      "id": "duplicate-pair",
+      "severity": "error",
+      "message": "Row 8 scores the vendor \"Vendor Alpha\" on the criterion \"Integration\" again; row 4, on line 5, already does. The row was left out of the other checks.",
+      "file": "examples/bad/scores.csv",
+      "line": 9,
+      "column": 1,
+      "at": "examples/bad/scores.csv:9",
+      "subject": "Vendor Alpha / Integration",
+      "fix": "Keep one row for each vendor and criterion, or one row for each criterion in the criteria file.",
+      "kind": "across rows",
+      "own": "Refusing a pair written twice is a best practice of this tool; no standard sets it; two scores for one cell would make the weighted score depend on which one is read"
+    },
+    {
+      "id": "yes-no-unreadable",
+      "severity": "error",
+      "message": "The red_flag of row 11, \"maybe\", is not yes or no; it is read as no.",
+      "file": "examples/bad/scores.csv",
+      "line": 12,
+      "column": 85,
+      "at": "examples/bad/scores.csv:12",
+      "subject": "Vendor Beta / Security practice",
+      "fix": "Write yes or no, or leave the cell empty.",
+      "kind": "row",
+      "own": "Reading only yes and no is a best practice of this tool; no standard sets it; a red flag written as \"maybe\" or \"y\" would otherwise pass as no flag"
+    },
+    {
+      "id": "weight-differs",
+      "severity": "error",
+      "message": "The weight of row 13 for the criterion \"References\" is 2, but row 5, on line 6, gives it 1.5. The first weight is the one used.",
+      "file": "examples/bad/scores.csv",
+      "line": 14,
+      "column": 24,
+      "at": "examples/bad/scores.csv:14",
+      "subject": "Vendor Beta / References",
+      "fix": "Give the criterion one weight and write it on every row, or leave the weight out of the scores file and give it in the criteria file.",
+      "kind": "across rows",
+      "own": "Asking for one weight for a criterion is a best practice of this tool; no standard sets it; a criterion that counts for 2 on one vendor and 3 on another makes the scores of the vendors unequal"
+    },
+    {
+      "id": "criterion-not-in-criteria",
+      "severity": "error",
+      "message": "The criterion \"Roadmap fit\" of row 16 is not in the criteria file, so it has no weight from it; the rows of this criterion were left out.",
+      "file": "examples/bad/scores.csv",
+      "line": 17,
+      "column": 13,
+      "at": "examples/bad/scores.csv:17",
+      "subject": "Roadmap fit",
+      "fix": "Add the criterion to the criteria file, or correct its name in the scores file.",
+      "kind": "across rows",
+      "own": "Keeping the two files in step is a best practice of this tool; no standard sets it; a criterion without a weight from the file that owns the weights would count for nothing, or for a weight nobody agreed"
+    },
+    {
+      "id": "required-unscored",
+      "severity": "error",
+      "message": "The vendor \"Vendor Gamma\" has no row for the criterion \"Published audits\", which other vendors have and the criteria file marks required.",
+      "file": "examples/bad/scores.csv",
+      "line": 18,
+      "column": 1,
+      "at": "examples/bad/scores.csv:18",
+      "subject": "Vendor Gamma / Published audits",
+      "fix": "Score the criterion for the vendor, or take the mark required off it in the criteria file.",
+      "kind": "across rows",
+      "own": "Letting the criteria file say what must be scored is a best practice of this tool; no standard sets it; a ranking that skips a required criterion for one vendor compares unlike things"
+    },
+    {
+      "id": "score-invalid",
+      "severity": "error",
+      "message": "The score of row 19, 7, is above 5. The criterion counts as unscored for this vendor.",
+      "file": "examples/bad/scores.csv",
+      "line": 20,
+      "column": 28,
+      "at": "examples/bad/scores.csv:20",
+      "subject": "Vendor Gamma / Integration",
+      "fix": "Write the score as a plain number from 0 to 5, with a point, such as 4 or 3.5, or leave the cell empty if the vendor was not scored.",
+      "kind": "row",
+      "own": "Reading only plain numbers from 0 to 5 is a best practice of this tool; no standard sets it; a score that is read some other way would change the ranking without anyone seeing it"
+    },
+    {
+      "id": "weight-not-positive",
+      "severity": "error",
+      "message": "The weight of row 21, \"0\", is not a plain number above zero (no sign, no exponent, no thousands separator, at most 40 digits).",
+      "file": "examples/bad/scores.csv",
+      "line": 22,
+      "column": 30,
+      "at": "examples/bad/scores.csv:22",
+      "subject": "Vendor Gamma / Pricing clarity",
+      "fix": "Write the weight as a plain number above zero, such as 2 or 1.5.",
+      "kind": "row",
+      "own": "Asking for a plain number above zero is a best practice of this tool; no standard sets it; a weight of zero or one that is text cannot be added up"
+    },
+    {
+      "id": "cell-incomplete",
+      "severity": "error",
+      "message": "Row 22 has no value in the cell under \"vendor\", which every row needs; the row was left out.",
+      "file": "examples/bad/scores.csv",
+      "line": 23,
+      "column": 1,
+      "at": "examples/bad/scores.csv:23",
+      "subject": null,
+      "fix": "Fill the cell, or delete the row if it is a leftover.",
+      "kind": "row",
+      "own": "Asking for a vendor and a criterion on every row is a best practice of this tool; no standard sets it; a score that belongs to nobody or to nothing cannot be counted"
+    },
+    {
+      "id": "required-unscored",
+      "severity": "error",
+      "message": "Row 23 leaves the criterion \"Chain experience\" unscored for the vendor \"Vendor Delta\", and the criteria file marks it required.",
+      "file": "examples/bad/scores.csv",
+      "line": 24,
+      "column": 33,
+      "at": "examples/bad/scores.csv:24",
+      "subject": "Vendor Delta / Chain experience",
+      "fix": "Score the criterion for the vendor, or take the mark required off it in the criteria file.",
+      "kind": "across rows",
+      "own": "Letting the criteria file say what must be scored is a best practice of this tool; no standard sets it; a ranking that skips a required criterion for one vendor compares unlike things"
+    },
+    {
+      "id": "secret-in-file",
+      "severity": "error",
+      "message": "A cell of the column \"note\" is shaped like a mnemonic. The tool never reads a seed or a key, and the value is not shown.",
+      "file": "examples/bad/scores.csv",
+      "line": 26,
+      "column": 90,
+      "at": "examples/bad/scores.csv:26",
+      "subject": null,
+      "fix": "Remove the value from the file and from wherever the file was copied, treat it as exposed and move what it controls to a new key. A scorecard names vendors, criteria and scores, never the key of an account.",
+      "kind": "file",
+      "own": "Looking for keys and seeds is a best practice of this tool; no standard sets it; a report must never copy a secret into a log or a pull request comment"
+    },
+    {
+      "id": "row-malformed",
+      "severity": "error",
+      "message": "Row 27 has 4 cells but the header has 9; the row was left out of every other check.",
+      "file": "examples/bad/scores.csv",
+      "line": 28,
+      "column": 1,
+      "at": "examples/bad/scores.csv:28",
+      "subject": null,
+      "fix": "Put a cell that holds a comma, a tab or a line end in double quotes, and write a quote inside it as two quotes.",
+      "kind": "file",
+      "own": "Reporting a row of the wrong width is a best practice of this tool; no standard sets it; every cell after the extra one would be shifted and read as another column"
+    },
+    {
+      "id": "column-unknown",
+      "severity": "warning",
+      "message": "The column \"status\" of the scores file is not a column the tool reads, so the values under it are not checked.",
+      "file": "examples/bad/scores.csv",
+      "line": 1,
+      "column": 54,
+      "at": "examples/bad/scores.csv:1",
+      "subject": "status",
+      "fix": "Correct the name to a column of docs/inputs.md, or leave the column in if it is for your own use.",
+      "kind": "file",
+      "own": "Reporting a column that is not read is a best practice of this tool; no standard sets it; a misspelt name would otherwise hide a cell from every check"
+    },
+    {
+      "id": "red-flag-raised",
+      "severity": "warning",
+      "message": "The vendor \"Vendor Alpha\" has a red flag for the criterion \"Security practice\" in row 3. Note: \"Signing key held by one person only\".",
+      "file": "examples/bad/scores.csv",
+      "line": 4,
+      "column": 46,
+      "at": "examples/bad/scores.csv:4",
+      "subject": "Vendor Alpha / Security practice",
+      "fix": "Read the note and decide, as a person, what the red flag means for the shortlist. The tool does not drop a vendor and does not change a score for it.",
+      "kind": "row",
+      "own": "Listing every red flag is a best practice of this tool; no standard sets it; a red flag in a spreadsheet is easy to lose among the scores"
+    },
+    {
+      "id": "evidence-missing",
+      "severity": "warning",
+      "message": "Row 10 scores \"Published audits\" at 5 for \"Vendor Beta\" with nothing in the evidence cell; a score above 3 should point at where it comes from.",
+      "file": "examples/bad/scores.csv",
+      "line": 11,
+      "column": 36,
+      "at": "examples/bad/scores.csv:11",
+      "subject": "Vendor Beta / Published audits",
+      "fix": "Put the web address or the document reference that the score rests on in the evidence cell, or lower the score.",
+      "kind": "row",
+      "own": "Asking for evidence behind a high score is a best practice of this tool; no standard sets it; a high score with nothing behind it cannot be checked by a second reader"
+    },
+    {
+      "id": "criterion-unscored",
+      "severity": "warning",
+      "message": "Row 12 leaves the criterion \"Integration\" unscored for the vendor \"Vendor Beta\".",
+      "file": "examples/bad/scores.csv",
+      "line": 13,
+      "column": 27,
+      "at": "examples/bad/scores.csv:13",
+      "subject": "Vendor Beta / Integration",
+      "fix": "Score the criterion, or leave it unscored on purpose and check that the coverage of the vendor is still enough.",
+      "kind": "row",
+      "own": "Listing every criterion left unscored is a best practice of this tool; no standard sets it; a vendor scored on fewer criteria is not ranked on the same ground as the others"
+    },
+    {
+      "id": "coverage-low",
+      "severity": "warning",
+      "message": "The coverage of the vendor \"Vendor Gamma\" is 56.7 percent of the total weight, below the minimum of 80 percent. Its weighted score rests on 4 of 7 criteria.",
+      "file": "examples/bad/scores.csv",
+      "line": 18,
+      "column": 1,
+      "at": "examples/bad/scores.csv:18",
+      "subject": "Vendor Gamma",
+      "fix": "Score the missing criteria for the vendor, or read its weighted score as a score on part of the scorecard.",
+      "kind": "across rows",
+      "own": "Reporting coverage next to the score is a best practice of this tool; no standard sets it; a high score on few criteria looks the same as a high score on all of them"
+    },
+    {
+      "id": "vendor-misses-criterion",
+      "severity": "warning",
+      "message": "The vendor \"Vendor Gamma\" has no row for the criterion \"Support after launch\", which other vendors have.",
+      "file": "examples/bad/scores.csv",
+      "line": 18,
+      "column": 1,
+      "at": "examples/bad/scores.csv:18",
+      "subject": "Vendor Gamma / Support after launch",
+      "fix": "Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap.",
+      "kind": "across rows",
+      "own": "Comparing the criteria of the vendors is a best practice of this tool; no standard sets it; a missing row is easy to overlook, and it leaves the vendor with a lower coverage"
+    },
+    {
+      "id": "coverage-low",
+      "severity": "warning",
+      "message": "The coverage of the vendor \"Vendor Delta\" is 43.3 percent of the total weight, below the minimum of 80 percent. Its weighted score rests on 3 of 7 criteria.",
+      "file": "examples/bad/scores.csv",
+      "line": 24,
+      "column": 1,
+      "at": "examples/bad/scores.csv:24",
+      "subject": "Vendor Delta",
+      "fix": "Score the missing criteria for the vendor, or read its weighted score as a score on part of the scorecard.",
+      "kind": "across rows",
+      "own": "Reporting coverage next to the score is a best practice of this tool; no standard sets it; a high score on few criteria looks the same as a high score on all of them"
+    },
+    {
+      "id": "vendor-misses-criterion",
+      "severity": "warning",
+      "message": "The vendor \"Vendor Delta\" has no row for the criterion \"Integration\", which other vendors have.",
+      "file": "examples/bad/scores.csv",
+      "line": 24,
+      "column": 1,
+      "at": "examples/bad/scores.csv:24",
+      "subject": "Vendor Delta / Integration",
+      "fix": "Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap.",
+      "kind": "across rows",
+      "own": "Comparing the criteria of the vendors is a best practice of this tool; no standard sets it; a missing row is easy to overlook, and it leaves the vendor with a lower coverage"
+    },
+    {
+      "id": "vendor-misses-criterion",
+      "severity": "warning",
+      "message": "The vendor \"Vendor Delta\" has no row for the criterion \"References\", which other vendors have.",
+      "file": "examples/bad/scores.csv",
+      "line": 24,
+      "column": 1,
+      "at": "examples/bad/scores.csv:24",
+      "subject": "Vendor Delta / References",
+      "fix": "Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap.",
+      "kind": "across rows",
+      "own": "Comparing the criteria of the vendors is a best practice of this tool; no standard sets it; a missing row is easy to overlook, and it leaves the vendor with a lower coverage"
+    },
+    {
+      "id": "vendor-misses-criterion",
+      "severity": "warning",
+      "message": "The vendor \"Vendor Delta\" has no row for the criterion \"Support after launch\", which other vendors have.",
+      "file": "examples/bad/scores.csv",
+      "line": 24,
+      "column": 1,
+      "at": "examples/bad/scores.csv:24",
+      "subject": "Vendor Delta / Support after launch",
+      "fix": "Add the row, with a score or with an empty score on purpose, so that the sheet shows the gap.",
+      "kind": "across rows",
+      "own": "Comparing the criteria of the vendors is a best practice of this tool; no standard sets it; a missing row is easy to overlook, and it leaves the vendor with a lower coverage"
+    },
+    {
+      "id": "tie-too-close",
+      "severity": "info",
+      "message": "The vendors \"Vendor Alpha\" (4.23) and \"Vendor Beta\" (4.19) are next to each other in the ranking and differ by less than the tie margin of 0.1; the order between them is too close to call.",
+      "file": "examples/bad/scores.csv",
+      "line": 2,
+      "column": 1,
+      "at": "examples/bad/scores.csv:2",
+      "subject": "Vendor Alpha / Vendor Beta",
+      "fix": "Do not treat the order of the two as a result. Look at the criteria that differ, at the evidence and at the red flags, or score again.",
+      "kind": "across rows",
+      "own": "Saying when the ranking cannot separate two vendors is a best practice of this tool; no standard sets it; a rank of 1 and a rank of 2 read as a gap, even when the scores are a hair apart"
+    },
+    {
+      "id": "evidence-form",
+      "severity": "info",
+      "message": "The evidence of row 6, \"as discussed on the call\", is not a web address that starts with http:// or https://, and not a document reference such as DOC-12.",
+      "file": "examples/bad/scores.csv",
+      "line": 7,
+      "column": 34,
+      "at": "examples/bad/scores.csv:7",
+      "subject": "Vendor Alpha / Pricing clarity",
+      "fix": "Write the evidence as a web address or as a document reference, so that a second reader can find it.",
+      "kind": "row",
+      "own": "Looking at the form of the evidence is a best practice of this tool; no standard sets it; a sentence such as \"as discussed\" cannot be followed up"
+    }
+  ],
+  "notes": [
+    "1 criterion has no valid weight and is left out of the weighted scores and the coverage"
+  ],
+  "notice": "This report is arithmetic and bookkeeping on the scores in the file. It does not judge any vendor, it does not check that a score or a link is true, and it is not advice.",
+  "result": {
+    "pass": false,
+    "failOn": "error",
+    "text": "FAIL - 15 findings at or above error (15 error, 10 warning, 2 info)"
+  }
+}
