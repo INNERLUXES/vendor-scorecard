@@ -1,0 +1,51 @@
+{
+  "name": "vendor-scorecard",
+  "version": "1.0.0",
+  "description": "Vendor scorecard: scores a shortlist of vendors the same way every time. Reads a spreadsheet of vendors, criteria, weights, scores, evidence links and red flags (CSV or TSV, one row for each vendor and criterion), ranks the vendors by weighted score with exact decimal arithmetic, and lists, with the line, criteria left unscored, scores with no evidence behind them, red-flag answers, vendors scored on too little of the scorecard and ties too close to call. Does arithmetic and bookkeeping on the scores people enter; it does not judge vendors and is not advice. Contacts nothing over the network, reads no clock, writes nothing. Text, markdown, JSON and SARIF output, exit codes for a pipeline, no dependencies.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "bin": {
+    "vendor-scorecard": "bin/vendor-scorecard.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "docs",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "test:coverage": "node --test --experimental-test-coverage \"test/*.test.js\"",
+    "check": "node tools/check.mjs",
+    "example": "node tools/example.mjs"
+  },
+  "keywords": [
+    "vendor-selection",
+    "scorecard",
+    "procurement",
+    "weighted-scoring",
+    "decision-matrix",
+    "blockchain",
+    "due-diligence",
+    "csv",
+    "data-quality",
+    "sarif",
+    "cli",
+    "nodejs"
+  ],
+  "author": "INNERLUXES <info@innerluxes.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/INNERLUXES/vendor-scorecard.git"
+  },
+  "homepage": "https://innerluxes.dev/blockchain/top-blockchain-development-companies"
+}

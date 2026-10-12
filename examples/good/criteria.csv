@@ -1,0 +1,8 @@
+criterion,weight,required,description
+Chain experience,3,yes,Years and kinds of live chain work the vendor can show
+Published audits,2.5,yes,Audit reports on past work that a reader can open
+Security practice,3,yes,"How the vendor handles keys, reviews and incidents"
+Integration,2,no,Fit with the systems the project already runs
+References,1.5,no,Clients who agreed to be asked about the vendor
+Pricing clarity,1,no,How plainly the quote shows what is and is not included
+Support after launch,2,no,What the vendor offers once the project is live

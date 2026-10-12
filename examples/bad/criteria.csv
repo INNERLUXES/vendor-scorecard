@@ -1,0 +1,9 @@
+criterion,required,description
+Chain experience,yes,Years and kinds of live chain work the vendor can show
+Published audits,yes,Audit reports on past work that a reader can open
+Security practice,yes,How the vendor handles keys and reviews
+Integration,no,Fit with the systems the project already runs
+References,maybe,Clients who agreed to be asked about the vendor
+Pricing clarity,no,How plainly the quote shows what is included
+Support after launch,no,What the vendor offers once the project is live
+Token design,no,Nobody has scored this one yet

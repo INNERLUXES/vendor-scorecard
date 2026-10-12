@@ -1,0 +1,29 @@
+vendor,criterion,weight,score,evidence,red_flag,note
+Vendor Alpha,Chain experience,3,5,https://example.com/vendor-alpha/chain-experience,no,"Four live networks, shown in the case list"
+Vendor Alpha,Published audits,2.5,4,https://example.com/vendor-alpha/published-audits,,"Two reports, one with open findings listed"
+Vendor Alpha,Security practice,3,4.5,DOC-101,,Written key policy and review steps
+Vendor Alpha,Integration,2,4,https://example.com/vendor-alpha/integration,no,Has an adapter for the existing queue
+Vendor Alpha,References,1.5,4,https://example.com/vendor-alpha/references,,Three references offered
+Vendor Alpha,Pricing clarity,1,3,https://example.com/vendor-alpha/pricing-clarity,,Quote groups several items together
+Vendor Alpha,Support after launch,2,4,https://example.com/vendor-alpha/support-after-launch,no,Support hours stated in the quote
+Vendor Beta,Chain experience,3,4,https://example.com/vendor-beta/chain-experience,no,Two live networks
+Vendor Beta,Published audits,2.5,4.5,https://example.com/vendor-beta/published-audits,,"Three reports, all with fixes confirmed"
+Vendor Beta,Security practice,3,4,DOC-202,,Policy shared under agreement
+Vendor Beta,Integration,2,3.5,https://example.com/vendor-beta/integration,no,Needs a small middle layer
+Vendor Beta,References,1.5,3,https://example.com/vendor-beta/references,,Two references offered
+Vendor Beta,Pricing clarity,1,4,https://example.com/vendor-beta/pricing-clarity,,Quote is itemised
+Vendor Beta,Support after launch,2,3.5,https://example.com/vendor-beta/support-after-launch,no,Support by ticket only
+Vendor Gamma,Chain experience,3,3,https://example.com/vendor-gamma/chain-experience,no,One live network
+Vendor Gamma,Published audits,2.5,3,https://example.com/vendor-gamma/published-audits,,"One report, older work"
+Vendor Gamma,Security practice,3,3.5,https://example.com/vendor-gamma/security-practice,,"Review steps listed, no key policy"
+Vendor Gamma,Integration,2,4.5,https://example.com/vendor-gamma/integration,no,Native fit with the current stack
+Vendor Gamma,References,1.5,4,https://example.com/vendor-gamma/references,,Three references offered
+Vendor Gamma,Pricing clarity,1,3.5,https://example.com/vendor-gamma/pricing-clarity,,Quote lists prices by phase
+Vendor Gamma,Support after launch,2,4,https://example.com/vendor-gamma/support-after-launch,no,Named contact after launch
+Vendor Delta,Chain experience,3,3.5,https://example.com/vendor-delta/chain-experience,no,"Two networks, one still in test"
+Vendor Delta,Published audits,2.5,2,https://example.com/vendor-delta/published-audits,,No public report
+Vendor Delta,Security practice,3,2.5,https://example.com/vendor-delta/security-practice,,Policy still being written
+Vendor Delta,Integration,2,3,https://example.com/vendor-delta/integration,no,Integration done by a partner
+Vendor Delta,References,1.5,2.5,https://example.com/vendor-delta/references,,One reference offered
+Vendor Delta,Pricing clarity,1,4,https://example.com/vendor-delta/pricing-clarity,,"Fixed price, clear scope"
+Vendor Delta,Support after launch,2,2.5,https://example.com/vendor-delta/support-after-launch,no,Support terms not yet agreed
